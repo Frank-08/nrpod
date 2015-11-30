@@ -133,6 +133,7 @@ my $updatetags;
 my $verbose = 0;
 my $gui = 1;
 my $optionsPrompt = 1;
+my $settings = 0;
 
 my $term = Term::ReadLine->new($0);
 my $OUT = $term->OUT || \*STDOUT;
@@ -378,6 +379,9 @@ sub loadConfig {
         die "unknown host: $hostname";
     }
     print $OUT "basedirectory: $baseDirectory\n" if $debug>1;
+
+    # Load Settings from file
+    eval `cat $settings` if $settings;
 } # loadConfig
 
 sub dependenciesArePresent {
@@ -1202,6 +1206,7 @@ GetOptions (
 	'gui!' => \$gui,
 	'verbose!' => \$verbose,
 	'options-prompt!' => \$optionsPrompt,
+	'settings' => \$settings,
 ) or pod2usage(2);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
